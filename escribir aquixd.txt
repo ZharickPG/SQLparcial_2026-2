@@ -1,1 +1,394 @@
 holiiii,pondre un archivo de guia
+https://github.com/jperez-art/dental-clinic/tree/master
+git profe abajo
+https://github.com/sgutz96/Curso-Back/blob/main/modulo-09-nodejs-intro/README.md
+Asumo que estás en Windows + Visual Studio Code + MySQL + Node.js.
+
+🧩 1. Primero comprobar Node.js
+
+Abre PowerShell o CMD y ejecuta:
+
+node -v
+
+Debe aparecer algo parecido a:
+
+v22.x.x
+
+Luego:
+
+npm -v
+
+Debe aparecer un número, por ejemplo:
+
+10.x.x
+
+Después:
+
+where node
+
+y:
+
+where npm
+
+Deberías obtener rutas parecidas a:
+
+C:\Program Files\nodejs\node.exe
+C:\Program Files\nodejs\npm
+🟢 Prueba definitiva de Node
+
+Ejecuta:
+
+node
+
+Luego escribe:
+
+console.log("Node funciona correctamente");
+
+Debe salir:
+
+Node funciona correctamente
+
+Para salir:
+
+.exit
+🗄️ 2. Comprobar MySQL
+
+Primero:
+
+mysql --version
+
+Debería aparecer algo parecido a:
+
+mysql  Ver 8.0.xx
+
+Si Windows dice:
+
+'mysql' no se reconoce...
+
+no necesariamente significa que MySQL esté mal instalado; puede ser que MySQL no esté agregado al PATH.
+
+🔌 3. Comprobar que el servidor MySQL esté encendido
+
+En PowerShell:
+
+Get-Service MySQL*
+
+Podrías ver algo como:
+
+Status   Name
+------   ----
+Running  MySQL80
+
+Si aparece Stopped, intenta:
+
+Start-Service MySQL80
+
+Y vuelve a comprobar:
+
+Get-Service MySQL*
+
+Debe quedar:
+
+Running
+
+El nombre puede variar según cómo se haya instalado, así que si no existe MySQL80, no ejecutes comandos a ciegas; primero miramos qué nombre te aparece.
+
+🔑 4. Probar conexión a MySQL
+
+Ahora:
+
+mysql -u root -p
+
+Te pedirá:
+
+Enter password:
+
+Escribes la contraseña que pusiste al instalar MySQL.
+
+⚠️ Cuando escribas la contraseña no se verá nada en pantalla. Es normal.
+
+Si entra correctamente, aparecerá algo parecido a:
+
+mysql>
+
+Ahora prueba:
+
+SHOW DATABASES;
+
+Y debería aparecer una lista.
+
+Después:
+
+SELECT VERSION();
+
+Y:
+
+SELECT 1;
+
+Si devuelve:
+
+1
+
+🎉 MySQL está funcionando.
+
+Para salir:
+
+exit;
+📁 5. Crear nuestra carpeta del proyecto
+
+Ahora sí abrimos PowerShell y hacemos:
+
+mkdir universidad
+cd universidad
+
+Comprueba dónde estás:
+
+pwd
+
+Luego:
+
+code .
+
+Eso debería abrir Visual Studio Code directamente en la carpeta universidad.
+
+📦 6. Crear el proyecto Node.js
+
+Dentro de la carpeta:
+
+npm init -y
+
+Se creará:
+
+package.json
+
+Comprueba:
+
+dir
+
+Deberías ver:
+
+package.json
+🚀 7. Instalar las librerías que necesitamos
+
+Para nuestro proyecto:
+
+npm install express mysql2 cors
+
+Cuando termine:
+
+npm list --depth=0
+
+Deberías encontrar:
+
+express
+mysql2
+cors
+
+Estas tres son las importantes:
+
+Paquete	Para qué sirve
+express	Crear el servidor Node
+mysql2	Conectar Node con MySQL
+cors	Permitir comunicación frontend ↔ backend
+🧪 8. Crear una prueba mínima de Node
+
+En VS Code crea:
+
+server.js
+
+Pon:
+
+console.log("🚀 Node.js funciona correctamente");
+
+Ahora ejecuta:
+
+node server.js
+
+Debe aparecer:
+
+🚀 Node.js funciona correctamente
+🗄️ 9. Crear la base de datos de prueba
+
+En MySQL ejecuta:
+
+CREATE DATABASE universidad;
+
+Después:
+
+USE universidad;
+
+Comprueba:
+
+SELECT DATABASE();
+
+Debe devolver:
+
+universidad
+🔗 10. Probar Node + MySQL
+
+Ahora reemplaza el contenido de server.js por:
+
+const mysql = require("mysql2");
+
+const conexion = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "TU_CONTRASEÑA",
+    database: "universidad"
+});
+
+conexion.connect((error) => {
+    if (error) {
+        console.error("❌ Error conectando a MySQL:");
+        console.error(error.message);
+        return;
+    }
+
+    console.log("✅ Node.js conectado correctamente a MySQL");
+
+    conexion.query("SELECT 1 AS prueba", (error, resultado) => {
+        if (error) {
+            console.error("❌ Error ejecutando consulta:");
+            console.error(error.message);
+            return;
+        }
+
+        console.log("Resultado:", resultado);
+    });
+});
+
+Cambia:
+
+password: "TU_CONTRASEÑA",
+
+por tu contraseña real.
+
+Luego:
+
+node server.js
+
+Si todo está bien deberías obtener algo como:
+
+✅ Node.js conectado correctamente a MySQL
+Resultado: [ { prueba: 1 } ]
+
+🔥 ESTE ES EL PUNTO MÁS IMPORTANTE.
+
+Si llegamos aquí, significa:
+
+Visual Studio Code
+       ↓
+     Node.js
+       ↓
+     mysql2
+       ↓
+     MySQL
+       ↓
+   Base de datos
+
+y todo está hablando correctamente.
+
+🌐 11. Ahora probar Express
+
+Después cambia server.js a:
+
+const express = require("express");
+
+const app = express();
+
+const PORT = 3000;
+
+app.get("/", (req, res) => {
+    res.send("Servidor funcionando correctamente 🚀");
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor funcionando en http://localhost:${PORT}`);
+});
+
+Ejecuta:
+
+node server.js
+
+Debería aparecer:
+
+Servidor funcionando en http://localhost:3000
+
+Abres el navegador y entras a:
+
+http://localhost:3000
+
+Y debe aparecer:
+
+Servidor funcionando correctamente 🚀
+🧠 12. Comandos que quiero que tengas guardados
+
+Estos son los que más probablemente vas a usar:
+
+Node
+node -v
+npm -v
+node server.js
+Crear proyecto
+npm init -y
+Instalar paquetes
+npm install express mysql2 cors
+Ver paquetes
+npm list --depth=0
+MySQL
+mysql --version
+mysql -u root -p
+MySQL desde PowerShell
+Get-Service MySQL*
+Abrir VS Code
+code .
+🛑 Y MUY IMPORTANTE para evitar errores
+
+No quiero que hagamos esto:
+
+instalar todo
+↓
+crear 15 carpetas
+↓
+copiar código
+↓
+❌ error
+↓
+no sabemos qué falló
+
+Vamos a hacerlo como una cadena de pruebas:
+
+1️⃣ node -v
+        ↓
+2️⃣ npm -v
+        ↓
+3️⃣ mysql --version
+        ↓
+4️⃣ MySQL está Running
+        ↓
+5️⃣ mysql -u root -p
+        ↓
+6️⃣ CREATE DATABASE universidad
+        ↓
+7️⃣ npm init -y
+        ↓
+8️⃣ npm install express mysql2 cors
+        ↓
+9️⃣ node server.js
+        ↓
+🔟 Node → MySQL
+        ↓
+1️⃣1️⃣ Express
+        ↓
+1️⃣2️⃣ Frontend → Express → MySQL
+
+No avances al siguiente punto si el anterior da error. Así encontramos exactamente dónde está el problema en vez de tener 5 errores mezclados 😂💗
+
+Si quieres hacerlo ahora mismo paso a paso, empieza ejecutando únicamente:
+
+node -v
+npm -v
+mysql --version
+
+y me pegas exactamente lo que te salga. Con eso te digo el siguiente comando.
+---------------------------------------------------------------------------------------------------
