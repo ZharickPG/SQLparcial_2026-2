@@ -1,4 +1,309 @@
+MAIN TAREA XD
+import 'package:flutter/material.dart';
 
+import 'Widgets/post.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TicketForge(),
+    );
+  }
+}
+
+class TicketForge extends StatefulWidget {
+  const TicketForge({super.key});
+
+  @override
+  State<TicketForge> createState() => _TicketForgeState();
+}
+
+class _TicketForgeState extends State<TicketForge> {
+  int _selectedIndex = 0;
+
+  // Cambiar la sección seleccionada en el Navbar
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // SECCIÓN 1: INICIO (Con la frase pintada de verde y sin filtros)
+  Widget _inicio() {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const SizedBox(height: 10),
+
+        // Frase del medio pintada de verde
+        const Text(
+          'texto insano',
+          style: TextStyle(
+            color: Colors.green, // 👈 Frase cambiada a color verde
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        const Row(
+          children: [
+            Text(
+              'mis fav',
+              style: TextStyle(
+                color: Color.fromARGB(255, 93, 172, 103),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 20),
+            Text(
+              'pelis',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 20),
+            Text(
+              'no se',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
+        const Post(
+          titulo: 'tmnt2003',
+          descripcion:
+              "los amo"
+              ,
+          usuario: '2003',
+          urlIMG:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBa9w0B1GiEC0WPWB_SsLRvHBmY7LskZs2OqSxAv2dmECOSdU8psnudUaS&s=10',
+        ),
+
+        const Post(
+          titulo: 'tmnt 87',
+          descripcion:
+              'uwuwuwuwu '
+              ,
+          usuario: '1987',
+          urlIMG:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN6uBIaoBDA8FIGplNEkcYpM6XESOwZAloxj6cqfkR2g&s=10',
+        ),
+
+        const Post(
+          titulo: 'ascenso d las tortugAS',
+          descripcion:
+              'tilines '
+              ,
+          usuario: '2018',
+          urlIMG:
+              'https://m.media-amazon.com/images/M/MV5BMjc3ZGQ5YjMtMGNiYS00NjJkLWJmN2ItOGRhOWZjMDVlNDBmXkEyXkFqcGc@._V1_QL75_UX500_CR0,0,500,281_.jpg',
+        ),
+      ],
+    );
+  }
+
+  // Vistas secundarias para que el navbar de 4 opciones funcione sin problemas
+  Widget _eventosPlaceholder() {
+    return const Center(child: Text('Sección Eventos', style: TextStyle(fontSize: 20)));
+  }
+
+  Widget _ticketsPlaceholder() {
+    return const Center(child: Text('Sección Tickets', style: TextStyle(fontSize: 20)));
+  }
+
+  Widget _perfilPlaceholder() {
+    return const Center(child: Text('Sección Perfil', style: TextStyle(fontSize: 20)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Lista con las 4 pantallas correspondientes al Navbar
+    final List<Widget> pantallas = [
+      _inicio(),
+      _eventosPlaceholder(),
+      _ticketsPlaceholder(),
+      _perfilPlaceholder(),
+    ];
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF5F8),
+
+      appBar: AppBar(
+        title: const Text(
+          'Tortugos ninjos',
+          style: TextStyle(
+            color: Color.fromARGB(255, 14, 58, 0),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 65, 158, 81),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
+
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: pantallas,
+      ),
+
+      // Navegación inferior con exactamente 4 opciones[cite: 3]
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color.fromARGB(255, 97, 160, 110),
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 0, 100, 0),
+        unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_view),
+            label: 'Eventos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.confirmation_number),
+            label: 'Juegos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+---
+POST TAREAAAA
+import 'package:flutter/material.dart';
+
+class Post extends StatelessWidget {
+  final String titulo;
+  final String descripcion;
+  final String usuario;
+  final String urlIMG;
+
+  const Post({
+    super.key,
+    required this.titulo,
+    required this.descripcion,
+    required this.usuario,
+    required this.urlIMG,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Imagen del evento
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            urlIMG,
+            height: 180,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 180,
+                width: double.infinity,
+                color: const Color.fromARGB(255, 210, 221, 197),
+                child: const Center(
+                  child: Icon(
+                    Icons.image_not_supported,
+                    size: 45,
+                    color: Colors.grey,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        // Título y botón de favorito
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                titulo,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite_border),
+            ),
+          ],
+        ),
+
+        // Descripción
+        Text(
+          descripcion,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // Botón para ver el evento
+        TextButton(
+          onPressed: () {},
+          child: const Text(
+            'Ver evento',
+            style: TextStyle(
+              color: Color.fromARGB(255, 20, 150, 74),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+}
+=================================================================
 main:
 import 'package:flutter/material.dart';
 
