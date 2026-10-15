@@ -1,3 +1,611 @@
+oye estoy haciendo un trabajo en flutter y me gustaria que cambies la parte de clase 9 y pongas que se pueda poner listasy tal vez que salga algo random, tambien en la parte de inicio se ve lo de la foto me gustaria que sirva pero al mismo tiemp me gustaria que el los comentario me digas que debo borrar exactamente si quiero borrar eso completamente y que no afecte el  codigo
+
+
+main:
+import 'package:flutter/material.dart';
+
+import 'Widgets/post.dart';
+import 'Widgets/numero_random.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TicketForge(),
+    );
+  }
+}
+
+class TicketForge extends StatefulWidget {
+  const TicketForge({super.key});
+
+  @override
+  State<TicketForge> createState() => _TicketForgeState();
+}
+
+class _TicketForgeState extends State<TicketForge> {
+  int _selectedIndex = 0;
+
+  // Cambiar la sección seleccionada
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // Filtro de la pantalla de inicio
+  Widget _filtro(IconData icono, String texto) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icono,
+          color: const Color.fromARGB(255, 114, 158, 240),
+          size: 19,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          texto,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 13,
+          ),
+        ),
+        const Icon(
+          Icons.keyboard_arrow_down,
+          color: Colors.grey,
+          size: 18,
+        ),
+      ],
+    );
+  }
+
+  // SECCIÓN 1: INICIO
+  Widget _inicio() {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const SizedBox(height: 5),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _filtro(Icons.location_on_outlined, 'Ciudad'),
+            _filtro(Icons.apps, 'Categoría'),
+            _filtro(Icons.calendar_month_outlined, 'Fecha'),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
+        const Text(
+          '¡Los mejores eventos están en TicketForge!',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        const Row(
+          children: [
+            Text(
+              'Todos',
+              style: TextStyle(
+                color: Color.fromARGB(255, 69, 105, 184),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 20),
+            Text(
+              'Música',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 20),
+            Text(
+              'Festivales',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
+        const Post(
+          titulo: 'Próximo evento',
+          descripcion:
+              "El BTS World Tour 'Arirang' en Bogotá se realizará "
+              'los días 2 y 3 de octubre de 2026 en el Estadio '
+              'Nemesio Camacho El Campín.',
+          usuario: 'TicketForge',
+          urlIMG:
+              'https://wp.clutchpoints.com/wp-content/uploads/2026/08/BTS-Arirang-World-Tour-2026-review-So-this-is-what-it-was-like-seeing-The-Beatles.jpg',
+        ),
+
+        const Post(
+          titulo: 'Eventos pasados',
+          descripcion:
+              'El concierto de Stray Kids en Bogotá se realizó '
+              'el 9 de septiembre de 2026 en el escenario Vive Claro.',
+          usuario: 'TicketForge',
+          urlIMG:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTQB2sNSPCTVT9huQljiCIbt1K2UK95BlBhqknhpf7AoGwQNyU8iUeIbGv&s=10',
+        ),
+
+        const Post(
+          titulo: 'Próximos festivales',
+          descripcion:
+              'Rock al Parque 2026 se celebrará del 10 al 12 '
+              'de octubre en el Parque Metropolitano Simón Bolívar '
+              'de Bogotá.',
+          usuario: 'TicketForge',
+          urlIMG:
+              'https://bogota.gov.co/sites/default/files/2026-08/Lanzamiento%20cartel%20de%20artistas%2030%20an%CC%83os%20de%20Rock%20al%20Parque%202026%20Bogota%CC%81.png',
+        ),
+      ],
+    );
+  }
+
+  // SECCIÓN 2: EVENTOS
+  Widget _eventos() {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const Text(
+          'Todos los eventos',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        const Post(
+          titulo: 'BTS World Tour',
+          descripcion: 'Descubre la información del evento.',
+          usuario: 'TicketForge',
+          urlIMG:
+              'https://wp.clutchpoints.com/wp-content/uploads/2026/08/BTS-Arirang-World-Tour-2026-review-So-this-is-what-it-was-like-seeing-The-Beatles.jpg',
+        ),
+
+        const Post(
+          titulo: 'Rock al Parque',
+          descripcion: 'Descubre las novedades del festival.',
+          usuario: 'TicketForge',
+          urlIMG:
+              'https://bogota.gov.co/sites/default/files/2026-08/Lanzamiento%20cartel%20de%20artistas%2030%20an%CC%83os%20de%20Rock%20al%20Parque%202026%20Bogota%CC%81.png',
+        ),
+      ],
+    );
+  }
+
+  // SECCIÓN 3: TICKETS
+  Widget _tickets() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.confirmation_number_outlined,
+            size: 80,
+            color: Color.fromARGB(255, 114, 158, 240),
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Mis Tickets',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text('Aquí aparecerán tus entradas.'),
+        ],
+      ),
+    );
+  }
+
+  // SECCIÓN 4: PERFIL
+  Widget _perfil() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 45,
+            backgroundColor: Color.fromARGB(255, 114, 158, 240),
+            child: Icon(
+              Icons.person,
+              size: 55,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Mi Perfil',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text('Bienvenido a TicketForge.'),
+        ],
+      ),
+    );
+  }
+
+  // SECCIÓN 5: CLASE9
+  Widget _clase9() {
+    return DefaultTabController(
+      length: 4,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+
+          const Text(
+            'Mi espacio ♥',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          const TabBar(
+            isScrollable: true,
+            labelColor: Color.fromARGB(255, 69, 105, 184),
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(
+                icon: Icon(Icons.home),
+                text: 'Casita♥',
+              ),
+              Tab(
+                icon: Icon(Icons.favorite),
+                text: 'Mis bbs♥',
+              ),
+              Tab(
+                icon: Icon(Icons.music_note),
+                text: 'BTS♥',
+              ),
+              Tab(
+                icon: Icon(Icons.star),
+                text: 'TXT♥',
+              ),
+            ],
+          ),
+
+          const Expanded(
+            child: TabBarView(
+              children: [
+                Center(
+                  child: Text(
+                    'Casita♥',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'Mis bbs♥',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'BTS♥',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'TXT♥',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // SECCIÓN 6: NÚMERO ALEATORIO
+  Widget _random() {
+    return const NumeroRandom();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Orden de las seis secciones
+    final List<Widget> pantallas = [
+      _inicio(),
+      _eventos(),
+      _tickets(),
+      _perfil(),
+      _clase9(),
+      _random(),
+    ];
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF5F8),
+
+      appBar: AppBar(
+        title: const Text(
+          'TicketForge',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor:
+            const Color.fromARGB(255, 114, 158, 240),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
+
+      // Mantiene las pantallas en memoria al cambiar de sección
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: pantallas,
+      ),
+
+      // Navegación inferior
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        currentIndex: _selectedIndex,
+        selectedItemColor:
+            const Color.fromARGB(255, 114, 158, 240),
+        unselectedItemColor: Colors.grey,
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_view),
+            label: 'Eventos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.confirmation_number),
+            label: 'Tickets',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Clase9 ♥',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.casino),
+            label: 'Random',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+numero_random:
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+class NumeroRandom extends StatefulWidget {
+  const NumeroRandom({super.key});
+
+  @override
+  State<NumeroRandom> createState() => _NumeroRandomState();
+}
+
+class _NumeroRandomState extends State<NumeroRandom> {
+  int numero = 0;
+
+  void generarNumero() {
+    setState(() {
+      numero = Random().nextInt(100) + 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.casino,
+            size: 70,
+            color: Color.fromARGB(255, 114, 158, 240),
+          ),
+
+          const SizedBox(height: 15),
+
+          const Text(
+            'Número aleatorio',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Text(
+            '$numero',
+            style: const TextStyle(
+              fontSize: 50,
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          ElevatedButton(
+            onPressed: generarNumero,
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  const Color.fromARGB(255, 114, 158, 240),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 14,
+              ),
+            ),
+            child: const Text('Generar número'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+post:
+
+import 'package:flutter/material.dart';
+
+class Post extends StatelessWidget {
+  final String titulo;
+  final String descripcion;
+  final String usuario;
+  final String urlIMG;
+
+  const Post({
+    super.key,
+    required this.titulo,
+    required this.descripcion,
+    required this.usuario,
+    required this.urlIMG,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Imagen del evento
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            urlIMG,
+            height: 180,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 180,
+                width: double.infinity,
+                color: Colors.grey.shade200,
+                child: const Center(
+                  child: Icon(
+                    Icons.image_not_supported,
+                    size: 45,
+                    color: Colors.grey,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        // Título y botón de favorito
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                titulo,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite_border),
+            ),
+          ],
+        ),
+
+        // Descripción
+        Text(
+          descripcion,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // Botón para ver el evento
+        TextButton(
+          onPressed: () {},
+          child: const Text(
+            'Ver evento',
+            style: TextStyle(
+              color: Color.fromARGB(255, 69, 114, 196),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+}
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 holiiii,pondre un archivo de guia
 https://github.com/jperez-art/dental-clinic/tree/master
 git profe abajo
