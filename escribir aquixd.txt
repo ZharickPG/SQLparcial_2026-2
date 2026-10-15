@@ -1,5 +1,3 @@
-oye estoy haciendo un trabajo en flutter y me gustaria que cambies la parte de clase 9 y pongas que se pueda poner listasy tal vez que salga algo random, tambien en la parte de inicio se ve lo de la foto me gustaria que sirva pero al mismo tiemp me gustaria que el los comentario me digas que debo borrar exactamente si quiero borrar eso completamente y que no afecte el  codigo
-
 
 main:
 import 'package:flutter/material.dart';
