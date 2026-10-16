@@ -908,6 +908,1328 @@ class Post extends StatelessWidget {
   }
 }
 ------------------------------------------------------------------------------------------------------------------
+PROYECTO FINAL
+______
+main.dart
+
+import 'package:flutter/material.dart';
+
+import 'Widgets/Inicio.dart';
+import 'Widgets/Instrucciones.dart';
+import 'Widgets/Premios.dart';
+import 'Widgets/Juego.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: '¿Quién quiere ser millonario?',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 29, 24, 121),
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 92, 41, 136),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 54, 23, 90),
+          foregroundColor: Colors.white,
+        ),
+        useMaterial3: true,
+      ),
+      home: const Clase10(),
+    );
+  }
+}
+
+class Clase10 extends StatefulWidget {
+  const Clase10({super.key});
+
+  @override
+  State<Clase10> createState() => _Clase10State();
+}
+
+class _Clase10State extends State<Clase10> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: <Widget>[
+        const Inicio(),
+        const Instrucciones(),
+        const Premios(),
+        const Juego(),
+      ][_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: const Color.fromARGB(255, 50, 16, 74),
+        indicatorColor: const Color.fromARGB(255, 29, 24, 121),
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Inicio',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.menu_book_outlined),
+            selectedIcon: Icon(Icons.menu_book),
+            label: 'Instrucciones',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.emoji_events_outlined),
+            selectedIcon: Icon(Icons.emoji_events),
+            label: 'Premios',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.sports_esports_outlined),
+            selectedIcon: Icon(Icons.sports_esports),
+            label: 'Jugar',
+          ),
+        ],
+      ),
+    );
+  }
+}
+_____________________________
+
+
+
+instrucciones.dart
+
+import 'package:flutter/material.dart';
+
+class Instrucciones extends StatelessWidget {
+  const Instrucciones({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Instrucciones'), centerTitle: true),
+      body: ListView(
+        padding: const EdgeInsets.all(50),
+        children: const [
+          Icon(Icons.menu_book, size: 80, color: Color(0xFFEACB74)),
+          SizedBox(height: 20),
+          Text(
+            '¿Cómo se juega?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFEACB74),
+            ),
+          ),
+          SizedBox(height: 30),
+          ListTile(
+            leading: Icon(Icons.casino, color: Color(0xFFEACB74)),
+            title: Text('1. Sortea tu temática'),
+            subtitle: Text(
+              'La aplicación elegirá una de las cinco categorías.',
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.quiz, color: Color(0xFFEACB74)),
+            title: Text('2. Responde las preguntas'),
+            subtitle: Text(
+              'Selecciona una de las cuatro opciones disponibles.',
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.check_circle, color: Color(0xFFEACB74)),
+            title: Text('3. Contador de tiempo'),
+            subtitle: Text(
+              'Responde las preguntas en el menor tiempo posible.',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+______________________
+inicio.dart
+
+import 'package:flutter/material.dart';
+
+class Inicio extends StatelessWidget {
+  const Inicio({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8-L9ccCtqB1oDZ2mxHZXOqaMrntdsgKDUHBgKVj5YuuwIfNG-2AFew6s&s=10',
+                  width: 400,
+                  height: 390,
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text(
+                '¿QUIÉN QUIERE SER MILLONARIO?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFEACB74),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              const Text(
+                '¡Demuestra cuánto sabes y alcanza '
+                'el premio mayor!',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+__________________
+
+juego.dart
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import 'Preguntas.dart';
+
+class Juego extends StatefulWidget {
+  const Juego({super.key});
+
+  @override
+  State<Juego> createState() => _JuegoState();
+}
+
+class _JuegoState extends State<Juego> {
+  Tematica? tematicaActual;
+
+  int indicePregunta = 0;
+  int puntos = 0;
+  int segundos = 10;
+
+  int? opcionSeleccionada;
+
+  bool respondida = false;
+  bool terminado = false;
+  bool tiempoAgotado = false;
+
+  Timer? cronometro;
+  Timer? avanceAutomatico;
+
+  // INICIAR EL JUEGO
+
+  void iniciarJuego() {
+    cronometro?.cancel();
+    avanceAutomatico?.cancel();
+
+    setState(() {
+      tematicaActual = sortearTematica();
+
+      indicePregunta = 0;
+      puntos = 0;
+      segundos = 10;
+
+      opcionSeleccionada = null;
+
+      respondida = false;
+      terminado = false;
+      tiempoAgotado = false;
+    });
+
+    iniciarCronometro();
+  }
+
+  // CRONÓMETRO
+
+  void iniciarCronometro() {
+    cronometro?.cancel();
+
+    cronometro = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted || respondida || terminado) {
+        timer.cancel();
+        return;
+      }
+
+      if (segundos <= 1) {
+        timer.cancel();
+        responder(null);
+      } else {
+        setState(() {
+          segundos--;
+        });
+      }
+    });
+  }
+
+  // RESPONDER
+
+  void responder(int? opcion) {
+    if (respondida || terminado || tematicaActual == null) {
+      return;
+    }
+
+    cronometro?.cancel();
+
+    final pregunta = tematicaActual!.preguntas[indicePregunta];
+
+    final bool correcta =
+        opcion != null && opcion == pregunta.respuestaCorrecta;
+
+    setState(() {
+      respondida = true;
+      opcionSeleccionada = opcion;
+      tiempoAgotado = opcion == null;
+
+      if (tiempoAgotado) {
+        segundos = 0;
+      }
+
+      if (correcta) {
+        puntos += 100;
+      }
+    });
+
+    // Esperar un momento antes de pasar a la siguiente pregunta.
+    avanceAutomatico?.cancel();
+
+    avanceAutomatico = Timer(const Duration(milliseconds: 1300), () {
+      if (!mounted) return;
+
+      siguientePregunta();
+    });
+  }
+
+  // SIGUIENTE PREGUNTA
+
+  void siguientePregunta() {
+    if (tematicaActual == null) return;
+
+    if (indicePregunta < tematicaActual!.preguntas.length - 1) {
+      setState(() {
+        indicePregunta++;
+
+        opcionSeleccionada = null;
+        respondida = false;
+        tiempoAgotado = false;
+        segundos = 10;
+      });
+
+      iniciarCronometro();
+    } else {
+      setState(() {
+        terminado = true;
+      });
+    }
+  }
+
+  // NOMBRE DEL PREMIO
+
+  String obtenerPremio() {
+    if (puntos >= 1000) {
+      return '¡Premio mayor! - Leyenda suprema 🏆';
+    } else if (puntos >= 800) {
+      return 'Nivel 3 - Aura Pro 🥇';
+    } else if (puntos >= 500) {
+      return 'Nivel 2 - Aura en desarrollo 🥈';
+    } else if (puntos >= 100) {
+      return 'Nivel 1 - Noob en entrenamiento 🥉';
+    } else {
+      return 'Sin premio por ahora ⭐';
+    }
+  }
+
+  // CANTIDAD DE AURA
+
+  String obtenerAura() {
+    if (puntos >= 1000) {
+      return '+50.000 de aura';
+    } else if (puntos >= 800) {
+      return '+10.000 de aura';
+    } else if (puntos >= 500) {
+      return '+5.000 de aura';
+    } else if (puntos >= 100) {
+      return '+1.000 de aura';
+    } else {
+      return '-1.000 de aura';
+    }
+  }
+
+  // MENSAJE DEL PREMIO
+
+  String obtenerMensajePremio() {
+    if (puntos >= 1000) {
+      return '¡ERES UNA LEYENDA! Tu aura está en otro nivel. '
+          'Nadie puede detenerte.';
+    } else if (puntos >= 800) {
+      return '¡Qué nivel! Eres casi una leyenda. '
+          'El conocimiento fluye por tus venas.';
+    } else if (puntos >= 500) {
+      return 'Vas por buen camino. Tu potencial '
+          'empieza a despertar. Sigue así. ';
+    } else if (puntos >= 100) {
+      return 'Eres un noob, pero tranqui, '
+          'todavía puedes aprender más. ';
+    } else {
+      return 'Te falta entrenar, pequeño noob.  '
+          '¡Vuelve a intentarlo y consigue más aura!';
+    }
+  }
+
+  // RECLAMAR EL PREMIO
+
+  void reclamarPremio() {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF162B53),
+          scrollable: true,
+          title: Text(
+            puntos >= 100 ? '¡PREMIO DESBLOQUEADO! ' : 'MODO NOOB ACTIVADO ',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Color(0xFFEACB74),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.auto_awesome,
+                size: 60,
+                color: Color(0xFFEACB74),
+              ),
+
+              const SizedBox(height: 15),
+
+              Text(
+                obtenerPremio(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                obtenerAura(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFEACB74),
+                ),
+              ),
+
+              const SizedBox(height: 15),
+
+              Text(
+                obtenerMensajePremio(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                'Puntuación: $puntos / 1000',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white70),
+              ),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(
+                  color: Color(0xFFEACB74),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // LIBERAR RECURSOS
+
+  @override
+  void dispose() {
+    cronometro?.cancel();
+    avanceAutomatico?.cancel();
+
+    super.dispose();
+  }
+
+  // PANTALLA PRINCIPAL
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('¡A jugar!'), centerTitle: true),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: tematicaActual == null
+            ? pantallaInicial()
+            : terminado
+            ? pantallaFinal()
+            : pantallaPregunta(),
+      ),
+    );
+  }
+
+  // PANTALLA INICIAL
+
+  Widget pantallaInicial() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.casino, size: 85, color: Color(0xFFEACB74)),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              '¿Qué temática te tocará?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFEACB74),
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            const Text(
+              'K-pop, Tortugas Ninja, Michis, '
+              'Ladybug o Mo Dao Zu Shi.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+
+            const SizedBox(height: 30),
+
+            ElevatedButton.icon(
+              onPressed: iniciarJuego,
+              icon: const Icon(Icons.play_arrow),
+              label: const Text('Sortear mi temática'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // PANTALLA DE PREGUNTAS
+
+  Widget pantallaPregunta() {
+    final pregunta = tematicaActual!.preguntas[indicePregunta];
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            tematicaActual!.nombre,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFEACB74),
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Pregunta ${indicePregunta + 1} '
+                'de ${tematicaActual!.preguntas.length}',
+              ),
+
+              Text(
+                'Puntos: $puntos',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          LinearProgressIndicator(
+            value: (indicePregunta + 1) / tematicaActual!.preguntas.length,
+            color: const Color(0xFFEACB74),
+            backgroundColor: Colors.white24,
+            minHeight: 8,
+          ),
+
+          const SizedBox(height: 20),
+
+          // CRONÓMETRO
+          Center(
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 38,
+                  backgroundColor: segundos <= 3
+                      ? Colors.red.shade700
+                      : const Color(0xFF162B53),
+                  child: Text(
+                    '$segundos',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                const Text('segundos restantes'),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 25),
+
+          // ENUNCIADO
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF162B53),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Text(
+              pregunta.texto,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          // OPCIONES
+          ...List.generate(pregunta.opciones.length, (index) {
+            Color color = const Color(0xFF162B53);
+
+            if (respondida && index == pregunta.respuestaCorrecta) {
+              color = Colors.green.shade800;
+            } else if (respondida && index == opcionSeleccionada) {
+              color = Colors.red.shade800;
+            }
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: color,
+                  disabledForegroundColor: Colors.white,
+                  padding: const EdgeInsets.all(15),
+                ),
+                onPressed: respondida ? null : () => responder(index),
+                child: Text(
+                  '${String.fromCharCode(65 + index)}. '
+                  '${pregunta.opciones[index]}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }),
+
+          // MENSAJE Y AVANCE AUTOMÁTICO
+          if (respondida) ...[
+            const SizedBox(height: 10),
+
+            Text(
+              tiempoAgotado
+                  ? '¡Se acabó el tiempo!\n'
+                        'Respuesta correcta: '
+                        '${pregunta.opciones[pregunta.respuestaCorrecta]}'
+                  : opcionSeleccionada == pregunta.respuestaCorrecta
+                  ? '¡Respuesta correcta! +100 puntos'
+                  : 'Respuesta incorrecta.\n'
+                        'La respuesta correcta era: '
+                        '${pregunta.opciones[pregunta.respuestaCorrecta]}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              'Continuando a la siguiente pregunta...',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: Color(0xFFEACB74)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  // PANTALLA FINAL
+
+  Widget pantallaFinal() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.emoji_events, size: 90, color: Color(0xFFEACB74)),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              '¡Partida terminada!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFEACB74),
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            Text(
+              'Temática: ${tematicaActual!.nombre}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 18),
+            ),
+
+            const SizedBox(height: 15),
+
+            Text(
+              'Respuestas correctas: '
+              '${puntos ~/ 100} de '
+              '${tematicaActual!.preguntas.length}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 20),
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              'Tu puntuación: $puntos de '
+              '${tematicaActual!.preguntas.length * 100}',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 25),
+
+            ElevatedButton.icon(
+              onPressed: reclamarPremio,
+              icon: const Icon(Icons.card_giftcard),
+              label: const Text('Reclamar premio'),
+            ),
+
+            const SizedBox(height: 12),
+
+            ElevatedButton.icon(
+              onPressed: iniciarJuego,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Jugar de nuevo'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+_____________€€€€€€€€
+premios.dart
+
+import 'package:flutter/material.dart';
+
+class Premios extends StatelessWidget {
+  const Premios({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, String>> premios = [
+      {
+        'nivel': 'Nivel 1 - Noob en entrenamiento',
+        'puntos': '100 - 300 puntos',
+        'aura': '+1.000 de aura',
+        'mensaje':
+            'Eres un noob, pero tranqui, '
+            'todavía puedes aprender más. ',
+        'emoji': '🥉',
+      },
+      {
+        'nivel': 'Nivel 2 - Aura en desarrollo',
+        'puntos': '400 - 700 puntos',
+        'aura': '+5.000 de aura',
+        'mensaje':
+            'Vas por buen camino. Tu potencial '
+            'empieza a despertar. Sigue así. ',
+        'emoji': '🥈',
+      },
+      {
+        'nivel': 'Nivel 3 - Aura Pro',
+        'puntos': '800 - 900 puntos',
+        'aura': '+10.000 de aura',
+        'mensaje':
+            '¡Qué nivel! Eres casi una leyenda. '
+            'El conocimiento fluye por tus venas.',
+        'emoji': '🥇',
+      },
+      {
+        'nivel': '¡Premio mayor! - Leyenda suprema',
+        'puntos': '1.000 puntos',
+        'aura': '+50.000 de aura',
+        'mensaje':
+            '¡ERES UNA LEYENDA! Tu aura está en otro nivel. '
+            'Nadie puede detenerte.',
+        'emoji': '🏆',
+      },
+    ];
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Escala de premios'), centerTitle: true),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(20),
+        itemCount: premios.length,
+        itemBuilder: (context, index) {
+          final premio = premios[index];
+
+          return Card(
+            color: const Color(0xFF162B53),
+            margin: const EdgeInsets.only(bottom: 12),
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(12),
+
+              leading: Text(
+                premio['emoji']!,
+                style: const TextStyle(fontSize: 30),
+              ),
+
+              title: Text(
+                premio['nivel']!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFEACB74),
+                ),
+              ),
+
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text(
+                  '${premio['puntos']}\nToca para descubrir tu premio',
+                ),
+              ),
+
+              trailing: const Icon(Icons.stars, color: Color(0xFFEACB74)),
+
+              onTap: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (dialogContext) {
+                    return AlertDialog(
+                      backgroundColor: const Color(0xFF162B53),
+
+                      title: Text(
+                        premio['nivel']!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Color(0xFFEACB74),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            premio['emoji']!,
+                            style: const TextStyle(fontSize: 55),
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          Text(
+                            premio['aura']!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFEACB74),
+                            ),
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          Text(
+                            premio['mensaje']!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          Text(
+                            'Necesitas ${premio['puntos']} '
+                            'para alcanzar este nivel.',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      actionsAlignment: MainAxisAlignment.center,
+
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                          child: const Text(
+                            '¡Entendido!',
+                            style: TextStyle(
+                              color: Color(0xFFEACB74),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+___________________
+preguntas.dart
+
+import 'dart:math';
+
+class Pregunta {
+  final String texto;
+  final List<String> opciones;
+  final int respuestaCorrecta;
+
+  const Pregunta({
+    required this.texto,
+    required this.opciones,
+    required this.respuestaCorrecta,
+  });
+}
+
+class Tematica {
+  final String nombre;
+  final List<Pregunta> preguntas;
+
+  const Tematica({required this.nombre, required this.preguntas});
+}
+
+final List<Tematica> tematicas = [
+  // 1. K-POP
+
+  Tematica(
+    nombre: 'K-pop',
+    preguntas: const [
+      Pregunta(
+        texto: '¿Qué significa la palabra K-pop?',
+        opciones: ['Korean Pop', 'Kids Pop', 'King Pop', 'Karaoke Pop'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿De qué país es originario el K-pop?',
+        opciones: ['Japón', 'Corea del Sur', 'China', 'Tailandia'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama el fandom de BTS?',
+        opciones: ['Blink', 'Once', 'ARMY', 'Stay'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Qué grupo canta la canción Dynamite?',
+        opciones: ['BTS', 'TXT', 'EXO', 'ATEEZ'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama el fandom de BLACKPINK?',
+        opciones: ['MOA', 'Blink', 'MY', 'Engene'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Qué grupo tiene como fandom a MOA?',
+        opciones: ['BTS', 'Stray Kids', 'TXT', 'TWICE'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cuál de estos es un grupo de K-pop?',
+        opciones: ['Stray Kids', 'Coldplay', 'Imagine Dragons', 'Maroon 5'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Qué grupo lanzó la canción How You Like That?',
+        opciones: ['TWICE', 'BLACKPINK', 'Red Velvet', 'ITZY'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Cuántos integrantes tiene el grupo SEVENTEEN?',
+        opciones: ['17', '23', '13', '5'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cuál es el fandom de TWICE?',
+        opciones: ['Blink', 'ARMY', 'Stay', 'Once'],
+        respuestaCorrecta: 3,
+      ),
+    ],
+  ),
+
+  // 2. TORTUGAS NINJA
+  Tematica(
+    nombre: 'Tortugas Ninja (2003)',
+    preguntas: const [
+      Pregunta(
+        texto: '¿Quién es el líder de las tortugas?',
+        opciones: ['Rafael', 'Leonardo', 'Miguel Ángel', 'Donatello'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Quién es el experto en tecnología?',
+        opciones: ['Donatello', 'Leonardo', 'Rafael', 'Miguel Ángel'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Quién utiliza dos sai?',
+        opciones: ['Leonardo', 'Donatello', 'Rafael', 'Miguel Ángel'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Quién utiliza nunchakus?',
+        opciones: ['Rafael', 'Leonardo', 'Donatello', 'Miguel Ángel'],
+        respuestaCorrecta: 3,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama el maestro de las tortugas?',
+        opciones: ['Splinter', 'Shredder', 'Baxter', 'Casey'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Quién es la amiga reportera de las tortugas?',
+        opciones: ['Karai', 'April O’Neil', 'Angel', 'Irma'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Quién es el enemigo conocido como Shredder?',
+        opciones: ['Casey Jones', 'Hun', 'El Despedazador', 'Splinter'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Qué usa Leonardo como arma?',
+        opciones: ['Sai', 'Bastón', 'Espadas katana', 'Nunchakus'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama el amigo que usa una máscara de hockey?',
+        opciones: ['Casey Jones', 'Baxter Stockman', 'Hun', 'Leatherhead'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Qué tipo de animal es Splinter?',
+        opciones: ['Una rata', 'Un perro', 'Un gato', 'Una tortuga'],
+        respuestaCorrecta: 0,
+      ),
+    ],
+  ),
+
+  // 3. MICHIS
+  Tematica(
+    nombre: 'Michitos',
+    preguntas: const [
+      Pregunta(
+        texto: '¿Cómo se llama el sonido que hace un gato cuando está a gusto?',
+        opciones: ['Ladrido', 'Relincho', 'Ronroneo', 'Silbido'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Qué sentido tienen muy desarrollado los gatos?',
+        opciones: [
+          'El oído',
+          'El gusto por lo dulce',
+          'La visión de colores idéntica a la humana',
+          'La capacidad de hablar',
+        ],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llaman los pelos rígidos que los gatos tienen junto al hocico?',
+        opciones: ['Bigotes', 'Plumas', 'Escamas', 'Aletas'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Qué tipo de animal es el gato doméstico?',
+        opciones: ['Un mamífero', 'Un reptil', 'Un anfibio', 'Un insecto'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Qué suelen usar los gatos para asearse?',
+        opciones: ['La lengua', 'Las alas', 'Las pezuñas', 'Las antenas'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama una cría de gato?',
+        opciones: ['Cachorro', 'Potro', 'Gatito', 'Polluelo'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cuál de estos alimentos puede ser tóxico para los gatos?',
+        opciones: [
+          'Agua',
+          'Chocolate',
+          'Pollo sin condimentos',
+          'Comida formulada para gatos',
+        ],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Qué función cumple la cola en muchos gatos?',
+        opciones: [
+          'Ayuda con el equilibrio',
+          'Les permite volar',
+          'Les permite escuchar',
+          'Les permite masticar',
+        ],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Qué describe mejor la alimentación de los gatos?',
+        opciones: [
+          'Son herbívoros estrictos',
+          'Son carnívoros obligados',
+          'Solo comen frutas',
+          'Son insectos',
+        ],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Qué parte de las patas ayuda a amortiguar los pasos?',
+        opciones: ['Las uñas', 'Las almohadillas', 'Las orejas', 'Los bigotes'],
+        respuestaCorrecta: 1,
+      ),
+    ],
+  ),
+
+  // 4. LADYBUG / MIRACULOUS
+  Tematica(
+    nombre: 'Ladybug',
+    preguntas: const [
+      Pregunta(
+        texto: '¿Cuál es el nombre de superheroína de Marinette?',
+        opciones: ['Rena Rouge', 'Ladybug', 'Queen Bee', 'Vesperia'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto:
+            '¿Cómo se llama el kwami asociado al Miraculous de la mariquita?',
+        opciones: ['Plagg', 'Trixx', 'Tikki', 'Wayzz'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cuál es el nombre completo de Marinette?',
+        opciones: [
+          'Marinette Dupain-Cheng',
+          'Alya Césaire',
+          'Chloé Bourgeois',
+          'Juleka Couffaine',
+        ],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Cuál es la identidad civil de Cat Noir?',
+        opciones: [
+          'Nino Lahiffe',
+          'Adrien Agreste',
+          'Luka Couffaine',
+          'Max Kanté',
+        ],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Qué objeto usa Ladybug como arma principal?',
+        opciones: ['Un arco', 'Un bastón', 'Un yoyó', 'Una espada'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto:
+            '¿Cómo se llama el kwami vinculado al Miraculous del gato negro?',
+        opciones: ['Tikki', 'Sass', 'Plagg', 'Nooroo'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama la habilidad especial de Ladybug para crear un objeto que la ayude a resolver una situación?',
+        opciones: ['Amuleto encantado', 'Cataclysm', 'Venom', 'Mirage'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿Qué identidad de superheroína adopta Alya cuando usa el Miraculous del zorro?',
+        opciones: ['Queen Bee', 'Rena Rouge', 'Vesperia', 'Ryuko'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: 'En las primeras temporadas, ¿cómo se llama el villano conocido como Hawk Moth?',
+        opciones: [
+          'Nathalie Sancoeur',
+          'Adrien Agreste',
+          'Gabriel Agreste',
+          'Nino Lahiffe',
+        ],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Qué animal representa el Miraculous de Ladybug?',
+        opciones: ['Una mariposa', 'Una mariquita', 'Un zorro', 'Un gato'],
+        respuestaCorrecta: 1,
+      ),
+    ],
+  ),
+
+  // 5. MO DAO ZU SHI
+  Tematica(
+    nombre: 'Mo Dao Zu Shi',
+    preguntas: const [
+      Pregunta(
+        texto: '¿Cómo se llama el protagonista de la historia?',
+        opciones: ['Lan Wangji', 'Jiang Cheng', 'Wei Wuxian', 'Nie Huaisang'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Qué instrumento musical utiliza Lan Wangji?',
+        opciones: ['La flauta', 'El guqin', 'El tambor', 'La pipa'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Con qué título se conoce a Wei Wuxian?',
+        opciones: [
+          'Patriarca de Yiling',
+          'Hanguang-Jun',
+          'Jade de Lan',
+          'Líder de Qishan',
+        ],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿A qué secta pertenece Lan Wangji?',
+        opciones: ['Yunmeng Jiang', 'Qinghe Nie', 'Gusu Lan', 'Qishan Wen'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Qué instrumento utiliza Wei Wuxian para dirigir su cultivo demoniaco?',
+        opciones: ['El guqin', 'La flauta', 'La pipa', 'El erhu'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama la flauta de Wei Wuxian?',
+        opciones: ['Bichen', 'Suibian', 'Chenqing', 'Shuanghua'],
+        respuestaCorrecta: 2,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama la espada de Lan Wangji?',
+        opciones: ['Chenqing', 'Bichen', 'Suibian', 'Hensheng'],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Qué título honorífico recibe Lan Wangji?',
+        opciones: [
+          'Patriarca de Yiling',
+          'Hanguang-Jun',
+          'Jade de Yunmeng',
+          'Maestro de Qishan',
+        ],
+        respuestaCorrecta: 1,
+      ),
+      Pregunta(
+        texto: '¿Cómo se llama el hermano mayor de Lan Wangji?',
+        opciones: ['Lan Xichen', 'Lan Qiren', 'Jiang Cheng', 'Nie Mingjue'],
+        respuestaCorrecta: 0,
+      ),
+      Pregunta(
+        texto: '¿A qué secta pertenece la familia que crió a Wei Wuxian?',
+        opciones: ['Gusu Lan', 'Yunmeng Jiang', 'Qinghe Nie', 'Qishan Wen'],
+        respuestaCorrecta: 1,
+      ),
+    ],
+  ),
+];
+
+// SORTEO DE TEMÁTICA
+
+Tematica sortearTematica() {
+  final int indice = Random().nextInt(tematicas.length);
+  return tematicas[indice];
+}
+________________
+
+
 ------------------------------------------------------------------------------------------------------------------
 holiiii,pondre un archivo de guia
 https://github.com/jperez-art/dental-clinic/tree/master
