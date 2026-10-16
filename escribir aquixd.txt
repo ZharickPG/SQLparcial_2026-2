@@ -1,372 +1,5 @@
 
-import 'package:flutter/material.dart';
-
-import 'Widgets/post.dart';
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: TicketForge(),
-    );
-  }
-}
-
-class TicketForge extends StatefulWidget {
-  const TicketForge({super.key});
-
-  @override
-  State<TicketForge> createState() => _TicketForgeState();
-}
-
-class _TicketForgeState extends State<TicketForge> {
-  int _selectedIndex = 0;
-
-  // Lista para almacenar los mensajes que el usuario escriba y envíe
-  final List<String> _mensajes = [
-    '¡Hola! Bienvenidos al chat.',
-    'Puedes escribir un nuevo mensaje abajo.',
-  ];
-
-  final TextEditingController _mensajeController = TextEditingController();
-
-  // Cambiar la sección seleccionada en el Navbar
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  // Función para agregar un nuevo mensaje
-  void _enviarMensaje() {
-    if (_mensajeController.text.trim().isNotEmpty) {
-      setState(() {
-        _mensajes.add(_mensajeController.text.trim());
-        _mensajeController.clear();
-      });
-    }
-  }
-
-  // SECCIÓN 1: INICIO
-  Widget _inicio() {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        const SizedBox(height: 10),
-
-        // Frase del medio pintada de verde
-        const Text(
-          'texto insano',
-          style: TextStyle(
-            color: Colors.green, // 👈 Frase cambiada a color verde
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        const Row(
-          children: [
-            Text(
-              'mis fav',
-              style: TextStyle(
-                color: Color.fromRGBO(255, 93, 172, 103),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(width: 20),
-            Text(
-              'pelis',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(width: 20),
-            Text(
-              'no se',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 20),
-
-        // Posts con imágenes extraídas exactas de tus fotos
-        const Post(
-          titulo: 'tmnt2003',
-          descripcion: 'los amo',
-          usuario: '2003',
-          urlIMG:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBa9w0B1GiECOWPB_SsLrVHbMy7LskZs2OqSxAv2dmECOSdU8psnudUaS&s=10',
-        ),
-
-        const Post(
-          titulo: 'tmnt 87',
-          descripcion: 'uwuwuwuwu',
-          usuario: '1987',
-          urlIMG:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN6uBIaoBDA8FIGp1NEkcYpM6XES0wZAloxj6cqfKR2g&s=10',
-        ),
-
-        const Post(
-          titulo: 'ascenso d las tortugAS',
-          descripcion: 'tilines',
-          usuario: '2018',
-          urlIMG:
-              'https://m.media-amazon.com/images/M/MV5BMJc3ZGQ5YjMtMGNiYS00NjKlLWJmNzItOGRhOWZjMDV1NDBmXkeyXkFqcGc@._V1_QL75_UX500_CR0,0,500,281_.jpg',
-        ),
-      ],
-    );
-  }
-
-  // SECCIÓN 2: EVENTOS
-  Widget _eventosPlaceholder() {
-    return const Center(
-        child: Text('Sección Eventos', style: TextStyle(fontSize: 20)));
-  }
-
-  // SECCIÓN 3: MENSAJES (Interfaz para escribir y enviar mensajes)
-  Widget _mensajesSeccion() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: _mensajes.length,
-            itemBuilder: (context, index) {
-              return Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 114, 158, 240),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    _mensajes[index],
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          color: Colors.white,
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _mensajeController,
-                  decoration: const InputDecoration(
-                    hintText: 'Escribe un mensaje...',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              IconButton(
-                icon: const Icon(Icons.send, color: Colors.blue),
-                onPressed: _enviarMensaje,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  // SECCIÓN 4: PERFIL
-  Widget _perfilPlaceholder() {
-    return const Center(
-        child: Text('Sección Perfil', style: TextStyle(fontSize: 20)));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> pantallas = [
-      _inicio(),
-      _eventosPlaceholder(),
-      _mensajesSeccion(),
-      _perfilPlaceholder(),
-    ];
-
-    return Scaffold(
-      backgroundColor: const Color(0xFFFFF5F8),
-      appBar: AppBar(
-        title: const Text(
-          'Tortugos ninjos',
-          style: TextStyle(
-            color: Color.fromARGB(255, 14, 58, 0),
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 65, 158, 81),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: pantallas,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color.fromARGB(255, 97, 160, 110),
-        currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 0, 100, 0),
-        unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: 'Eventos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.confirmation_number),
-            label: 'Juegos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-        ],
-      ),
-    );
-  }
-}
-#######
-import 'package:flutter/material.dart';
-
-class Post extends StatelessWidget {
-  final String titulo;
-  final String descripcion;
-  final String usuario;
-  final String urlIMG;
-
-  const Post({
-    super.key,
-    required this.titulo,
-    required this.descripcion,
-    required this.usuario,
-    required this.urlIMG,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Imagen del evento
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            urlIMG,
-            height: 180,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                height: 180,
-                width: double.infinity,
-                color: Colors.grey.shade200,
-                child: const Center(
-                  child: Icon(
-                    Icons.image_not_supported,
-                    size: 45,
-                    color: Colors.grey,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        // Título y botón de favorito
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                titulo,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.favorite_border),
-            ),
-          ],
-        ),
-
-        // Descripción
-        Text(
-          descripcion,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 14,
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
-        // Botón para ver el evento
-        TextButton(
-          onPressed: () {},
-          child: const Text(
-            'Ver evento',
-            style: TextStyle(
-              color: Color.fromARGB(255, 69, 114, 196),
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 20),
-      ],
-    );
-  }
-}
-
-
-#######
-
+tarea tortuguinos
 MAIN TAREA XD
 import 'package:flutter/material.dart';
 
@@ -2599,6 +2232,373 @@ Tematica sortearTematica() {
 ________________
 
 
+import 'package:flutter/material.dart';
+
+import 'Widgets/post.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TicketForge(),
+    );
+  }
+}
+
+class TicketForge extends StatefulWidget {
+  const TicketForge({super.key});
+
+  @override
+  State<TicketForge> createState() => _TicketForgeState();
+}
+
+class _TicketForgeState extends State<TicketForge> {
+  int _selectedIndex = 0;
+
+  // Lista para almacenar los mensajes que el usuario escriba y envíe
+  final List<String> _mensajes = [
+    '¡Hola! Bienvenidos al chat.',
+    'Puedes escribir un nuevo mensaje abajo.',
+  ];
+
+  final TextEditingController _mensajeController = TextEditingController();
+
+  // Cambiar la sección seleccionada en el Navbar
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // Función para agregar un nuevo mensaje
+  void _enviarMensaje() {
+    if (_mensajeController.text.trim().isNotEmpty) {
+      setState(() {
+        _mensajes.add(_mensajeController.text.trim());
+        _mensajeController.clear();
+      });
+    }
+  }
+
+  // SECCIÓN 1: INICIO
+  Widget _inicio() {
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const SizedBox(height: 10),
+
+        // Frase del medio pintada de verde
+        const Text(
+          'texto insano',
+          style: TextStyle(
+            color: Colors.green, // 👈 Frase cambiada a color verde
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        const Row(
+          children: [
+            Text(
+              'mis fav',
+              style: TextStyle(
+                color: Color.fromRGBO(255, 93, 172, 103),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 20),
+            Text(
+              'pelis',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 20),
+            Text(
+              'no se',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
+        // Posts con imágenes extraídas exactas de tus fotos
+        const Post(
+          titulo: 'tmnt2003',
+          descripcion: 'los amo',
+          usuario: '2003',
+          urlIMG:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBa9w0B1GiECOWPB_SsLrVHbMy7LskZs2OqSxAv2dmECOSdU8psnudUaS&s=10',
+        ),
+
+        const Post(
+          titulo: 'tmnt 87',
+          descripcion: 'uwuwuwuwu',
+          usuario: '1987',
+          urlIMG:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN6uBIaoBDA8FIGp1NEkcYpM6XES0wZAloxj6cqfKR2g&s=10',
+        ),
+
+        const Post(
+          titulo: 'ascenso d las tortugAS',
+          descripcion: 'tilines',
+          usuario: '2018',
+          urlIMG:
+              'https://m.media-amazon.com/images/M/MV5BMJc3ZGQ5YjMtMGNiYS00NjKlLWJmNzItOGRhOWZjMDV1NDBmXkeyXkFqcGc@._V1_QL75_UX500_CR0,0,500,281_.jpg',
+        ),
+      ],
+    );
+  }
+
+  // SECCIÓN 2: EVENTOS
+  Widget _eventosPlaceholder() {
+    return const Center(
+        child: Text('Sección Eventos', style: TextStyle(fontSize: 20)));
+  }
+
+  // SECCIÓN 3: MENSAJES (Interfaz para escribir y enviar mensajes)
+  Widget _mensajesSeccion() {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: _mensajes.length,
+            itemBuilder: (context, index) {
+              return Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 114, 158, 240),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Text(
+                    _mensajes[index],
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          color: Colors.white,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _mensajeController,
+                  decoration: const InputDecoration(
+                    hintText: 'Escribe un mensaje...',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                icon: const Icon(Icons.send, color: Colors.blue),
+                onPressed: _enviarMensaje,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // SECCIÓN 4: PERFIL
+  Widget _perfilPlaceholder() {
+    return const Center(
+        child: Text('Sección Perfil', style: TextStyle(fontSize: 20)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> pantallas = [
+      _inicio(),
+      _eventosPlaceholder(),
+      _mensajesSeccion(),
+      _perfilPlaceholder(),
+    ];
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF5F8),
+      appBar: AppBar(
+        title: const Text(
+          'Tortugos ninjos',
+          style: TextStyle(
+            color: Color.fromARGB(255, 14, 58, 0),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 65, 158, 81),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: pantallas,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color.fromARGB(255, 97, 160, 110),
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color.fromARGB(255, 0, 100, 0),
+        unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_view),
+            label: 'Eventos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.confirmation_number),
+            label: 'Juegos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+          ),
+        ],
+      ),
+    );
+  }
+}
+#######
+import 'package:flutter/material.dart';
+
+class Post extends StatelessWidget {
+  final String titulo;
+  final String descripcion;
+  final String usuario;
+  final String urlIMG;
+
+  const Post({
+    super.key,
+    required this.titulo,
+    required this.descripcion,
+    required this.usuario,
+    required this.urlIMG,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Imagen del evento
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            urlIMG,
+            height: 180,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 180,
+                width: double.infinity,
+                color: Colors.grey.shade200,
+                child: const Center(
+                  child: Icon(
+                    Icons.image_not_supported,
+                    size: 45,
+                    color: Colors.grey,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
+        // Título y botón de favorito
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                titulo,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite_border),
+            ),
+          ],
+        ),
+
+        // Descripción
+        Text(
+          descripcion,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        // Botón para ver el evento
+        TextButton(
+          onPressed: () {},
+          child: const Text(
+            'Ver evento',
+            style: TextStyle(
+              color: Color.fromARGB(255, 69, 114, 196),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+}
+
+
+#######
 ------------------------------------------------------------------------------------------------------------------
 holiiii,pondre un archivo de guia
 https://github.com/jperez-art/dental-clinic/tree/master
